@@ -30,7 +30,7 @@ def get_image_collection(start_date, end_date):
     return (ee.ImageCollection('COPERNICUS/S2')
             .filterBounds(hartbeespoort_dam)
             .filterDate(start_date, end_date)
-            .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20)))
+            .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10)))
 
 # Function to process each image
 def process_image(image):
@@ -72,9 +72,9 @@ def download_images_for_range(start_date, end_date, folder_name):
         if i < len(dates) and dates[i] is not None:
             date = datetime.fromtimestamp(dates[i] / 1000).strftime('%Y-%m-%d')
         else:
-            date = f"unknown_date_{i}"
+            date = f"unknowndate{i}"
 
-        filename = os.path.join(folder_name, f'hartbeespoort_dam_{date}.tif')
+        filename = os.path.join(folder_name, f'hartbeespoortdam{date}.tif')
 
         # Download the image using geemap
         geemap.ee_export_image(
@@ -89,9 +89,9 @@ def download_images_for_range(start_date, end_date, folder_name):
 # Define time ranges (example: last 3 years, each year separately)
 current_year = datetime.now().year
 time_ranges = [
-    (f"{current_year - 3}-01-01", f"{current_year - 3}-12-31", f"images_{current_year - 3}"),
-    (f"{current_year - 2}-01-01", f"{current_year - 2}-12-31", f"images_{current_year - 2}"),
-    (f"{current_year - 1}-01-01", f"{current_year - 1}-12-31", f"images_{current_year - 1}")
+    (f"{current_year - 3}-01-01", f"{current_year - 3}-12-31", f"images{current_year - 3}"),
+    (f"{current_year - 2}-01-01", f"{current_year - 2}-12-31", f"images{current_year - 2}"),
+    (f"{current_year - 1}-01-01", f"{current_year - 1}-12-31", f"images{current_year - 1}")
 ]
 
 # Download images for each time range
